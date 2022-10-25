@@ -1,0 +1,45 @@
+<apex:page standardController="Lead" controller="formularioVisitaPDFController" applyBodyTag="false">
+
+    #IMPORTING LIBS
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.2.3/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        #CSS
+        }
+    </style>
+
+    <body>
+        #HTML CODE
+            
+            
+            <a href="javascript:generatePDF()" id="downloadButton">Click to download</a>
+        </div>
+
+        <script>
+            async function generatePDF() {
+                document.getElementById("downloadButton").innerHTML = "Currently downloading, please wait";
+
+                //Downloading
+                var downloading = document.getElementById("whatToPrint");
+                var doc = new jsPDF('1', 'pt', 'a4');
+
+                await html2canvas(downloading, {
+                    //allowTaint: true,
+                    //useCORS: true,
+                    width: 1320
+                }).then((canvas) => {
+                    //Canvas (convert to PNG)
+                    doc.addImage(canvas.toDataURL("image/png"), 'PNG', 10, 10, 590, 590);
+                })
+
+                doc.save("Document.pdf");
+
+                //End of downloading
+
+                document.getElementById("downloadButton").innerHTML = "Click to download";
+            }
+        </script>
+    </body>
+</apex:page>
